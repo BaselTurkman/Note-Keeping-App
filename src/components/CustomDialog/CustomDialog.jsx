@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -10,15 +10,19 @@ import {
   Box,
   Typography,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import { useDialog } from "../../Context/DialogProvider";
 
 export default function CustomDialog({ onConfirm }) {
   const { dialogState, dispatch } = useDialog();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClose = () => dispatch({ type: "close" });
 
-  const handleConfirm = () => {
-    onConfirm(dialogState);
+  const handleConfirm = async () => {
+    setIsLoading(true)
+    await onConfirm(dialogState);
+    setIsLoading(false)
     handleClose();
   };
 
@@ -75,17 +79,18 @@ export default function CustomDialog({ onConfirm }) {
         <Button onClick={handleClose} color="secondary" variant="contained">
           Cancel
         </Button>
-        <Button
+        <LoadingButton
           onClick={handleConfirm}
           color={dialogState.type === "delete" ? "error" : "primary"}
           variant="contained"
+          loading = {isLoading}
         >
           {dialogState.type === "delete"
             ? "Delete"
             : dialogState.type === "edit"
             ? "Save"
             : "Add"}
-        </Button>
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );
