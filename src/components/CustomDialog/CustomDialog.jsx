@@ -12,25 +12,25 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useDialog } from "../../Context/DialogProvider";
+import { useDialogActions } from "../../hooks/useDialogActions";
 
 export default function CustomDialog({ onConfirm }) {
-  const { dialogState, dispatch } = useDialog();
+  const { dialogState } = useDialog();
+  const { setDialogContent, setDialogTitle, closeDialog } = useDialogActions();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleClose = () => dispatch({ type: "close" });
+  const handleClose = () => closeDialog();
 
   const handleConfirm = async () => {
-    setIsLoading(true)
+    setIsLoading(true);
     await onConfirm(dialogState);
-    setIsLoading(false)
+    setIsLoading(false);
     handleClose();
   };
 
   const handleChange = (field) => (e) => {
-    dispatch({
-      type: field === "title" ? "set-title" : "set-content",
-      payload: e.target.value,
-    });
+    const value = e.target.value;
+    field === "title" ? setDialogTitle(value) : setDialogContent(value);
   };
 
   return (
@@ -45,7 +45,7 @@ export default function CustomDialog({ onConfirm }) {
         {dialogState.type === "delete" ? (
           <DialogContentText>
             <Typography variant="body1">
-              Are you sure you want to delete{" "}
+              Are you sure you want to delete
               <Typography component="span" variant="body1" fontWeight="bold">
                 {dialogState.title}
               </Typography>
@@ -83,7 +83,7 @@ export default function CustomDialog({ onConfirm }) {
           onClick={handleConfirm}
           color={dialogState.type === "delete" ? "error" : "primary"}
           variant="contained"
-          loading = {isLoading}
+          loading={isLoading}
         >
           {dialogState.type === "delete"
             ? "Delete"

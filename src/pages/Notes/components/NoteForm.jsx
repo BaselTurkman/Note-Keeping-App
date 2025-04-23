@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Box, TextField, Button, Collapse, Paper } from "@mui/material";
 
-import { useDialog } from "../../../Context/DialogProvider";
+import { useDialogActions } from "../../../hooks/useDialogActions";
 
 function NoteForm() {
   const [expanded, setExpanded] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const { dispatch } = useDialog();
+  const { openAddDialog } = useDialogActions();
 
   const handleCancel = () => {
     setExpanded(false);
@@ -17,15 +17,8 @@ function NoteForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!title || !content) return;
-    dispatch({
-      type: "open-add",
-      payload: {
-        title,
-        content,
-      },
-    });
+    openAddDialog({title, content})
   };
 
   return (

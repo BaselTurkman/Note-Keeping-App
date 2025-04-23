@@ -10,28 +10,22 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { bgColors } from "../../../constants/bgColors";
-import { useDialog } from "../../../Context/DialogProvider";
 import { formatDate } from "../../../utils/formatDate";
+import { useDialogActions } from "../../../hooks/useDialogActions";
 
 export default function NoteItem({ title, content, index, id, creationDate }) {
   const [isHovered, setIsHovered] = useState(false);
-  const { dispatch } = useDialog();
+  const {openEditDialog, openDeleteDialog} = useDialogActions()
   const displayDate = formatDate(creationDate);
   const bgColor = bgColors[index % bgColors.length];
 
   const handleDeleteClick = (e) => {
     e.stopPropagation();
-    dispatch({
-      type: "open-delete",
-      payload: { title, id },
-    });
+    openDeleteDialog({title, id})
   };
 
   const handleEditClick = () => {
-    dispatch({
-      type: "open-edit",
-      payload: { title, content, id },
-    });
+    openEditDialog({title, content, id})
   };
 
   return (
