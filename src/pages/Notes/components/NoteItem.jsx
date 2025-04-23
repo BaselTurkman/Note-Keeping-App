@@ -45,10 +45,10 @@ export default function NoteItem({ title, content, index, id, creationDate }) {
         <Typography gutterBottom variant="h5">
           {title}
         </Typography>
-        <Typography variant="body1" sx={{ color: "text.secondary" }}>
+        <Typography variant="body1" color="textSecondary">
           {content}
         </Typography>
-        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+        <Typography variant="body2" color="textSecondary">
           {displayDate}
         </Typography>
       </CardContent>
