@@ -14,9 +14,11 @@ import { useFetchNotes } from "../../hooks/useFetchNotes";
 import { useAddNote } from "../../hooks/useAddNote";
 import { useDeleteNote } from "../../hooks/useDeleteNote";
 import { useEditNote } from "../../hooks/useEditNote";
+import { useSearchContext } from "../../Context/SearchProvider";
 
 function Notes() {
   const { notes, pages, error, isLoading, fetchNotes } = useFetchNotes();
+  const { searchResults, isInSearchMode } = useSearchContext();
   const { addNote } = useAddNote(fetchNotes);
   const { deleteNote } = useDeleteNote(fetchNotes);
   const { editNote } = useEditNote(fetchNotes);
@@ -27,8 +29,10 @@ function Notes() {
   };
 
   useEffect(() => {
-    fetchNotes(currentPage);
-  }, [currentPage]);
+    if (!isInSearchMode) {
+      fetchNotes(currentPage);
+    }
+  }, [currentPage, isInSearchMode]);
 
   if (isLoading) {
     return (
@@ -54,6 +58,8 @@ function Notes() {
     }
   };
 
+  const notesToRender = isInSearchMode ? searchResults : notes;
+
   return (
     <Box p={5} my={2}>
       {error && (
@@ -70,7 +76,7 @@ function Notes() {
           <Typography variant="h5">My Notes</Typography>
           <NoteForm />
           <Grid container spacing={4} my={5}>
-            {notes.map((note, index) => (
+            {notesToRender.map((note, index) => (
               <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={note._id}>
                 <NoteItem
                   title={note.title}
@@ -85,14 +91,21 @@ function Notes() {
         </>
       )}
       <Stack alignItems="center" my={5}>
-        <Pagination
-          count={pages}
-          shape="rounded"
-          page={currentPage}
-          onChange={handlePageChange}
-          hidden={error}
-        />
+        {!isInSearchMode && (
+          <Pagination
+            count={pages}
+            shape="rounded"
+            page={currentPage}
+            onChange={handlePageChange}
+            hidden={error}
+          />
+        )}
       </Stack>
+      {isInSearchMode && (
+        <Typography variant="body2" mt={1}>
+          {searchResults.length} result{searchResults.length !== 1 && "s"} found
+        </Typography>
+      )}
       <CustomDialog onConfirm={handleDialogConfirm} />
     </Box>
   );
