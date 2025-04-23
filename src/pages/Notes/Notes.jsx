@@ -40,16 +40,17 @@ function Notes() {
 
   const handleDialogConfirm = async (dialogState) => {
     if (dialogState.type === "delete") {
-      deleteNote(dialogState.id);
+      await deleteNote(dialogState.id);
     } else if (dialogState.type === "add") {
-      addNote({ title: dialogState.title, content: dialogState.content });
+      await addNote({ title: dialogState.title, content: dialogState.content });
     } else {
       const data = {
         title: dialogState.title,
         content: dialogState.content,
         id: dialogState.id,
       };
-      editNote(data);
+      await editNote(data);
+      setCurrentPage(1);
     }
   };
 
@@ -74,6 +75,7 @@ function Notes() {
                 <NoteItem
                   title={note.title}
                   content={note.content}
+                  creationDate={note.creationDate}
                   index={index}
                   id={note._id}
                 />
@@ -88,7 +90,7 @@ function Notes() {
           shape="rounded"
           page={currentPage}
           onChange={handlePageChange}
-          hidden = {error}
+          hidden={error}
         />
       </Stack>
       <CustomDialog onConfirm={handleDialogConfirm} />

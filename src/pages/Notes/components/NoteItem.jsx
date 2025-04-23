@@ -11,14 +11,16 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { bgColors } from "../../../constants/bgColors";
 import { useDialog } from "../../../Context/DialogProvider";
+import { formatDate } from "../../../utils/formatDate";
 
-export default function NoteItem({ title, content, index, id }) {
+export default function NoteItem({ title, content, index, id, creationDate }) {
   const [isHovered, setIsHovered] = useState(false);
-  const bgColor = bgColors[index % bgColors.length];
   const { dispatch } = useDialog();
+  const displayDate = formatDate(creationDate);
+  const bgColor = bgColors[index % bgColors.length];
 
   const handleDeleteClick = (e) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     dispatch({
       type: "open-delete",
       payload: { title, id },
@@ -43,18 +45,17 @@ export default function NoteItem({ title, content, index, id }) {
         <Typography gutterBottom variant="h5">
           {title}
         </Typography>
-        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+        <Typography variant="body1" sx={{ color: "text.secondary" }}>
           {content}
+        </Typography>
+        <Typography variant="body2" sx={{ color: "text.secondary" }}>
+          {displayDate}
         </Typography>
       </CardContent>
       <CardActions>
         <Tooltip title="Delete">
           <Fade in={isHovered} timeout={300}>
-            <IconButton
-              size="large"
-              edge="end"
-              onClick={handleDeleteClick} 
-            >
+            <IconButton size="large" edge="end" onClick={handleDeleteClick}>
               <DeleteIcon color="error" />
             </IconButton>
           </Fade>
