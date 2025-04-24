@@ -21,7 +21,7 @@ function Notes() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { notes, pages, error, isLoading, fetchNotes } = useFetchNotes();
-  const { searchResults, isInSearchMode } = useSearchContext();
+  const { searchResults, isInSearchMode, handleClearSearch } = useSearchContext();
   const { addNote } = useAddNote(fetchNotes);
   const { deleteNote } = useDeleteNote(fetchNotes);
   const { editNote } = useEditNote(fetchNotes);
@@ -52,6 +52,7 @@ function Notes() {
         break;
     }
     setCurrentPage(1);
+    handleClearSearch()
   };
 
   if (isLoading) {
@@ -64,17 +65,21 @@ function Notes() {
 
   return (
     <Box p={5} my={2}>
-      {error && (
-        <Typography color="error" variant="body2" mt={1}>
+      {error ? (
+        <Typography color="error" variant="h4" mt={1}>
           {error}
         </Typography>
+      ) : (
+        <>
+          <Typography variant="h4" mb={2}>
+            My Notes
+          </Typography>
+          <NoteForm />
+        </>
       )}
-      <Typography variant="h4" mb={2}>
-        My Notes
-      </Typography>
-      <NoteForm />
+
       {notesToRender.length === 0 ? (
-        <Typography variant="body1" mt={3}>
+        <Typography variant="h5" mt={3}>
           No notes found
         </Typography>
       ) : (
