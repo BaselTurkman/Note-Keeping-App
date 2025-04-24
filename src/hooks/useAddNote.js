@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useSnackbarAlerts } from "./useSnackbarAlerts";
 
 export const useAddNote = (refetch) => {
-  const [error, setError] = useState(null);
   const { showSuccessSnackbar, showErrorSnackbar } = useSnackbarAlerts();
 
   const addNote = async (note) => {
@@ -19,10 +18,9 @@ export const useAddNote = (refetch) => {
       showSuccessSnackbar("Note added successfully");
     } catch (err) {
       const message = err.message || "Something went wrong";
-      setError(message);
       showErrorSnackbar(message);
     }
   };
 
-  return { addNote, error };
+  return { addNote };
 };
