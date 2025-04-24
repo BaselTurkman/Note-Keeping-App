@@ -8,6 +8,7 @@ export const dialogReducer = (state, action) => {
                 , type: "add",
                 title: action.payload.title,
                 content: action.payload.content,
+                header: "Add Note"
             };
         case "open-edit":
             return {
@@ -17,6 +18,7 @@ export const dialogReducer = (state, action) => {
                 title: action.payload.title,
                 content: action.payload.content,
                 id: action.payload.id,
+                header: "Edit Note"
             };
         case "open-delete":
             return {
@@ -25,6 +27,7 @@ export const dialogReducer = (state, action) => {
                 type: "delete",
                 title: action.payload.title,
                 id: action.payload.id,
+                header: "Delete Note"
             };
         case "set-title":
             return { ...state, title: action.payload };

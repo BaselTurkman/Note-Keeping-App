@@ -35,16 +35,12 @@ export default function CustomDialog({ onConfirm }) {
 
   return (
     <Dialog open={dialogState.open} onClose={handleClose} fullWidth>
-      <DialogTitle>
-        {dialogState.type === "delete" && "Delete Note"}
-        {dialogState.type === "add" && "Add Note"}
-        {dialogState.type === "edit" && "Edit Note"}
-      </DialogTitle>
+      <DialogTitle>{dialogState.header}</DialogTitle>
 
       <DialogContent>
         {dialogState.type === "delete" ? (
           <DialogContentText>
-            <Typography variant="body1">
+            <Typography variant="body1" component="span">
               Are you sure you want to delete
               <Typography component="span" variant="body1" fontWeight="bold">
                 {dialogState.title}
