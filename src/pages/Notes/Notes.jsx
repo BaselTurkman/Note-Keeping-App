@@ -21,7 +21,8 @@ function Notes() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { notes, pages, error, isLoading, fetchNotes } = useFetchNotes();
-  const { searchResults, isInSearchMode, handleClearSearch } = useSearchContext();
+  const { searchResults, isInSearchMode, handleClearSearch, isSearching } =
+    useSearchContext();
   const { addNote } = useAddNote(fetchNotes);
   const { deleteNote } = useDeleteNote(fetchNotes);
   const { editNote } = useEditNote(fetchNotes);
@@ -52,10 +53,13 @@ function Notes() {
         break;
     }
     setCurrentPage(1);
-    handleClearSearch()
+    
+    if (isInSearchMode) {
+      handleClearSearch();
+    }
   };
 
-  if (isLoading) {
+  if (isLoading || isSearching) {
     return (
       <Stack alignItems="center" justifyContent="center" minHeight="90vh">
         <CircularProgress />
@@ -86,7 +90,14 @@ function Notes() {
         <NotesCollection notes={notesToRender} />
       )}
       {isInSearchMode && (
-        <Typography variant="body1" mt={1}>
+        <Typography
+          variant="body1"
+          component="div"
+          mt={1}
+          fontSize={20}
+          textAlign="center"
+          my={5}
+        >
           {searchResults.length} result{searchResults.length !== 1 && "s"} found
         </Typography>
       )}

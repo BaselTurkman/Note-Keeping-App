@@ -9,6 +9,7 @@ export const useSearchNotes = () => {
   const searchNotes = async (title) => {
     if (!title.trim()) return;
     setIsSearching(true);
+    setResult([]);
     try {
       const res = await fetch(
         `http://localhost:8000/notes/search?title=${title}`
@@ -19,6 +20,7 @@ export const useSearchNotes = () => {
       const data = await res.json();
       setResult(data.data);
     } catch (error) {
+      setResult([]);
       showErrorSnackbar(error.message || "Something went wrong");
     } finally {
       setIsSearching(false);
