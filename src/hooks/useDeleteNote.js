@@ -18,7 +18,7 @@ export const useDeleteNote = (refetch) => {
     } catch (err) {
       const message = err.message || "Something went wrong";
       showErrorSnackbar(message);
-    } 
+    }
   };
 
   return { deleteNote };

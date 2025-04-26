@@ -1,23 +1,17 @@
 import Navbar from "./components/Navbar/Navbar";
 import { Container, CssBaseline } from "@mui/material";
-import { SnackbarProvider } from "./Context/snackbarProvider";
 import Notes from "./pages/Notes/Notes";
-import { DialogProvider } from "./Context/DialogProvider";
-import { SearchProvider } from "./Context/SearchProvider";
+import Providers from "./Providers";
 
 function App() {
   return (
-    <SnackbarProvider>
-      <SearchProvider>
-        <DialogProvider>
-          <CssBaseline />
-          <Navbar />
-          <Container>
-            <Notes />
-          </Container>
-        </DialogProvider>
-      </SearchProvider>
-    </SnackbarProvider>
+    <Providers>
+      <CssBaseline />
+      <Navbar />
+      <Container>
+        <Notes />
+      </Container>
+    </Providers>
   );
 }
 
