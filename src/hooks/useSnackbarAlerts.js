@@ -12,7 +12,7 @@ export function useSnackbarAlerts() {
   };
 
   const showErrorSnackbar = (msg) => {
-    showSnackbar(msg, "error");
+    showSnackbar(msg ||  "Something went wrong", "error");
   };
 
   return { showSuccessSnackbar, showInfoSnackbar, showErrorSnackbar };

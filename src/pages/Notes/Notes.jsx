@@ -16,6 +16,7 @@ import { useAddNote } from "../../hooks/useAddNote";
 import { useDeleteNote } from "../../hooks/useDeleteNote";
 import { useEditNote } from "../../hooks/useEditNote";
 import { useSearchContext } from "../../Context/SearchProvider";
+import { getSearchResultText } from "./utils/getSearchResultText";
 
 function Notes() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,6 +29,7 @@ function Notes() {
   const { editNote } = useEditNote(fetchNotes);
 
   const notesToRender = isInSearchMode ? searchResults : notes;
+  const haveNotesToRender=notesToRender.length === 0
 
   useEffect(() => {
     if (!isInSearchMode) {
@@ -82,7 +84,7 @@ function Notes() {
         </>
       )}
 
-      {notesToRender.length === 0 ? (
+      {haveNotesToRender ? (
         <Typography variant="h5" mt={3}>
           No notes found
         </Typography>
@@ -98,7 +100,7 @@ function Notes() {
           textAlign="center"
           my={5}
         >
-          {searchResults.length} result{searchResults.length !== 1 && "s"} found
+          {getSearchResultText(searchResults.length)}
         </Typography>
       )}
       <Stack alignItems="center" my={5}>

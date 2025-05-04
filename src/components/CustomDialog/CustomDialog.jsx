@@ -13,6 +13,7 @@ import {
 import { LoadingButton } from "@mui/lab";
 import { useDialog } from "../../Context/DialogProvider";
 import { useDialogActions } from "../../hooks/useDialogActions";
+import { DIALOG_BUTTON_LABELS } from "./constants";
 
 export default function CustomDialog({ onConfirm }) {
   const { dialogState } = useDialog();
@@ -25,12 +26,7 @@ export default function CustomDialog({ onConfirm }) {
     setIsLoading(true);
     await onConfirm(dialogState);
     setIsLoading(false);
-    handleClose();
-  };
-
-  const handleChange = (field) => (e) => {
-    const value = e.target.value;
-    field === "title" ? setDialogTitle(value) : setDialogContent(value);
+    closeDialog();
   };
 
   return (
@@ -56,7 +52,7 @@ export default function CustomDialog({ onConfirm }) {
               label="Title"
               fullWidth
               value={dialogState.title}
-              onChange={handleChange("title")}
+              onChange={(e) => setDialogTitle(e.target.value)}
             />
             <TextField
               margin="dense"
@@ -65,7 +61,7 @@ export default function CustomDialog({ onConfirm }) {
               multiline
               minRows={4}
               value={dialogState.content}
-              onChange={handleChange("content")}
+              onChange={(e) => setDialogContent(e.target.value)}
             />
           </Box>
         )}
@@ -81,11 +77,7 @@ export default function CustomDialog({ onConfirm }) {
           variant="contained"
           loading={isLoading}
         >
-          {dialogState.type === "delete"
-            ? "Delete"
-            : dialogState.type === "edit"
-            ? "Save"
-            : "Add"}
+          {DIALOG_BUTTON_LABELS[dialogState.type] || "Add"}
         </LoadingButton>
       </DialogActions>
     </Dialog>

@@ -36,7 +36,7 @@ export function SearchBar() {
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
       />
-      {query && (
+      {query.length !== 0 && (
         <IconButton
           size="small"
           onClick={handleClear}

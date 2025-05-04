@@ -1,24 +1,29 @@
 import { useState } from "react";
 import { Box, TextField, Button, Collapse, Paper } from "@mui/material";
-
 import { useDialogActions } from "../../../hooks/useDialogActions";
 
 function NoteForm() {
   const [expanded, setExpanded] = useState(false);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [note, setNote] = useState({ title: "", content: "" });
   const { openAddDialog } = useDialogActions();
+
+  const handleTitleChange = (e) => {
+    setNote((prev) => ({ ...prev, title: e.target.value }));
+  };
+
+  const handleContentChange = (e) => {
+    setNote((prev) => ({ ...prev, content: e.target.value }));
+  };
 
   const handleCancel = () => {
     setExpanded(false);
-    setTitle("");
-    setContent("");
+    setNote({ title: "", content: "" });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title || !content) return;
-    openAddDialog({title, content})
+    if (!note.title || !note.content) return;
+    openAddDialog(note);
   };
 
   return (
@@ -34,8 +39,8 @@ function NoteForm() {
             label="Title"
             fullWidth
             margin="normal"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={note.title}
+            onChange={handleTitleChange}
           />
           <TextField
             label="Content"
@@ -43,8 +48,8 @@ function NoteForm() {
             multiline
             rows={4}
             margin="normal"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+            value={note.content}
+            onChange={handleContentChange}
           />
           <Box mt={1}>
             <Button
@@ -52,7 +57,7 @@ function NoteForm() {
               color="success"
               type="submit"
               sx={{ mr: 1 }}
-              disabled={!title || !content}
+              disabled={!note.title || !note.content}
             >
               Save
             </Button>
