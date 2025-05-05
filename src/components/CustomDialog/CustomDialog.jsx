@@ -20,6 +20,12 @@ export default function CustomDialog({ onConfirm }) {
   const { setDialogContent, setDialogTitle, closeDialog } = useDialogActions();
   const [isLoading, setIsLoading] = useState(false);
 
+  const isEditType = dialogState.type === "edit";
+  const isDeleteType = dialogState.type === "delete";
+
+  const dialogText =
+    DIALOG_BUTTON_LABELS[dialogState.type] || (isEditType ? "Save" : "Add");
+
   const handleClose = () => closeDialog();
 
   const handleConfirm = async () => {
@@ -34,15 +40,13 @@ export default function CustomDialog({ onConfirm }) {
       <DialogTitle>{dialogState.header}</DialogTitle>
 
       <DialogContent>
-        {dialogState.type === "delete" ? (
+        {isDeleteType ? (
           <DialogContentText>
-            <Typography variant="body1" component="span">
-              Are you sure you want to delete
-              <Typography component="span" variant="body1" fontWeight="bold">
-                {dialogState.title}
-              </Typography>
-              ?
+            Are you sure you want to delete{" "}
+            <Typography component="span" fontWeight="bold">
+              {dialogState.title}
             </Typography>
+            ?
           </DialogContentText>
         ) : (
           <Box>
@@ -73,11 +77,11 @@ export default function CustomDialog({ onConfirm }) {
         </Button>
         <LoadingButton
           onClick={handleConfirm}
-          color={dialogState.type === "delete" ? "error" : "primary"}
+          color={isDeleteType ? "error" : "primary"}
           variant="contained"
           loading={isLoading}
         >
-          {DIALOG_BUTTON_LABELS[dialogState.type] || "Add"}
+          {dialogText}
         </LoadingButton>
       </DialogActions>
     </Dialog>

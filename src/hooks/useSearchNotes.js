@@ -21,7 +21,7 @@ export const useSearchNotes = () => {
       setResult(data.data);
     } catch (error) {
       setResult([]);
-      showErrorSnackbar(error.message || "Something went wrong");
+      showErrorSnackbar(error.message);
     } finally {
       setIsSearching(false);
     }

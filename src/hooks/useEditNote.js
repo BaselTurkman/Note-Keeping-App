@@ -19,7 +19,7 @@ export const useEditNote = (refetch) => {
       showSuccessSnackbar("Note Updated successfully");
       refetch();
     } catch (err) {
-      showErrorSnackbar(err.message || "Something went wrong");
+      showErrorSnackbar(err.message);
     }
   };
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSnackbarAlerts } from "./useSnackbarAlerts";
 
 export const useFetchNotes = () => {

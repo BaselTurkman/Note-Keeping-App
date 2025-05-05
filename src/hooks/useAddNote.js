@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSnackbarAlerts } from "./useSnackbarAlerts";
 
 export const useAddNote = (refetch) => {
